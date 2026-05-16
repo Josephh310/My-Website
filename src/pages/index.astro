@@ -1,379 +1,552 @@
 ---
-import { Image } from 'astro:assets';
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import HeadshotImage from '../assets/headshot.webp';
-import LuauIcon from '../assets/skill_icons/luau.svg';
-import JavaScriptIcon from '../assets/skill_icons/javascript.svg';
-import HtmlCssIcon from '../assets/skill_icons/html-css.svg';
-import GitIcon from '../assets/skill_icons/git.svg';
-import NodeJsIcon from '../assets/skill_icons/node-js.svg';
-import RojoIcon from '../assets/skill_icons/rojo.png';
-import VsCodeIcon from '../assets/skill_icons/vscode.svg';
-import ClaudeIcon from '../assets/skill_icons/claude.svg';
-import StudioIcon from '../assets/skill_icons/studio.svg';
-import GitHubIcon from '../assets/skill_icons/github.svg';
-import KocmocLogo from '../assets/experience_thumbnails/kocmoc.png';
-import BrainySpinachLogo from '../assets/experience_thumbnails/brainy_spinach.png';
-import EtaGamesLogo from '../assets/experience_thumbnails/eta_games.png';
-import BriefcaseIcon from '../assets/experience_thumbnails/briefcase.png';
+import { Image } from "astro:assets";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import HeadshotImage from "../assets/headshot.webp";
+import LuauIcon from "../assets/skill_icons/luau.svg";
+import JavaScriptIcon from "../assets/skill_icons/javascript.svg";
+import HtmlCssIcon from "../assets/skill_icons/html-css.svg";
+import GitIcon from "../assets/skill_icons/git.svg";
+import NodeJsIcon from "../assets/skill_icons/node-js.svg";
+import RojoIcon from "../assets/skill_icons/rojo.png";
+import VsCodeIcon from "../assets/skill_icons/vscode.svg";
+import ClaudeIcon from "../assets/skill_icons/claude.svg";
+import StudioIcon from "../assets/skill_icons/studio.svg";
+import GitHubIcon from "../assets/skill_icons/github.svg";
+import KocmocLogo from "../assets/experience_thumbnails/kocmoc.png";
+import BrainySpinachLogo from "../assets/experience_thumbnails/brainy_spinach.png";
+import EtaGamesLogo from "../assets/experience_thumbnails/eta_games.png";
+import NexusGamesLogo from "../assets/experience_thumbnails/nexus_games.svg";
+import BriefcaseIcon from "../assets/experience_thumbnails/briefcase.png";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			.hero {
-				display: flex;
-				align-items: flex-start;
-				gap: 3em;
-			}
-			.hero-text {
-				flex: 1;
-			}
-			.hero-text h1 {
-				margin-bottom: 0.25em;
-			}
-			.hero-text .subtitle {
-				font-size: 1.25em;
-				color: rgb(var(--gray));
-				margin-bottom: 1.5em;
-			}
-			.hero-text p {
-				margin-bottom: 1em;
-			}
-			.hero-image {
-				flex-shrink: 0;
-			}
-			.hero-image img {
-				width: 180px;
-				height: 180px;
-				object-fit: cover;
-				border-radius: 50%;
-				outline: 2px solid rgba(255, 255, 255, 0.7);
-				outline-offset: -1px;
-			}
-			@keyframes fade-up {
-				from {
-					opacity: 0;
-					transform: translateY(20px);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0);
-				}
-			}
-			.stagger {
-				opacity: 0;
-				animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-			}
-			.stagger:nth-child(1) { animation-delay: 0.1s; }
-			.stagger:nth-child(2) { animation-delay: 0.25s; }
-			.stagger:nth-child(3) { animation-delay: 0.4s; }
-			.stagger:nth-child(4) { animation-delay: 0.55s; }
-			@keyframes fade-up-scale {
-				from {
-					opacity: 0;
-					transform: translateY(20px) scale(0.85);
-				}
-				to {
-					opacity: 1;
-					transform: translateY(0) scale(1);
-				}
-			}
-			.hero-image {
-				opacity: 0;
-				animation: fade-up-scale 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
-			}
-			@media (max-width: 720px) {
-				.hero {
-					flex-direction: column-reverse;
-					align-items: center;
-					gap: 2em;
-					text-align: center;
-				}
-				.hero-image img {
-					width: 150px;
-					height: 150px;
-				}
-			}
-			.divider {
-				border-top: 1px solid rgb(var(--gray-light));
-			}
-			.portfolio {
-				width: 720px;
-				max-width: calc(100% - 2em);
-				margin: auto;
-				padding: 3em 1em;
-			}
-			.portfolio h2 {
-				margin-bottom: 1.25em;
-			}
-			.portfolio h3 {
-				color: rgb(var(--gray));
-				font-weight: 500;
-			}
-			.skills-section {
-				margin-top: 1.5em;
-				margin-bottom: 3em;
-			}
-			.skills-section h4 {
-				font-size: 1.1em;
-				margin: 1.5em 0 0.75em;
-			}
-			.skills-section h4:first-child {
-				margin-top: 0;
-			}
-			.skill-list {
-				list-style: none;
-				margin: 0;
-				padding: 0;
-				display: flex;
-				flex-direction: column;
-				gap: 0.35em;
-			}
-			.skill-item {
-				display: flex;
-				align-items: center;
-				gap: 0.75em;
-				padding: 0.6em 0.75em;
-				border-radius: 10px;
-				transition: background var(--transition);
-				cursor: default;
-			}
-			.skill-item:hover {
-				background: rgb(var(--gray-light));
-			}
-			.skill-icon {
-				width: 32px;
-				height: 32px;
-				flex-shrink: 0;
-				color: rgb(var(--gray));
-			}
-			.skill-icon svg,
-			.skill-icon img {
-				width: 32px;
-				height: 32px;
-				border-radius: 4px;
-			}
-			:global([data-theme="dark"]) .theme-invert {
-				filter: invert(1);
-			}
-			.skill-info {
-				flex: 1;
-			}
-			.skill-name {
-				font-weight: 600;
-				color: rgb(var(--gray-dark));
-			}
-			.skill-desc {
-				color: rgb(var(--gray));
-			}
-			.timeline {
-				margin-top: 1.5em;
-				position: relative;
-			}
-			.timeline-item {
-				display: flex;
-				gap: 1.25em;
-				position: relative;
-				padding-bottom: 2em;
-			}
-			.timeline-item:last-child {
-				padding-bottom: 0;
-			}
-			.timeline-marker {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				flex-shrink: 0;
-				width: 48px;
-			}
-			.timeline-logo {
-				width: 48px;
-				height: 48px;
-				border-radius: var(--radius);
-				background: rgb(var(--gray-light));
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				font-size: 1.25em;
-				color: rgb(var(--gray));
-				flex-shrink: 0;
-				overflow: hidden;
-				z-index: 1;
-			}
-			.timeline-logo img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-				border-radius: 0;
-			}
-			.timeline-line {
-				flex: 1;
-				width: 2px;
-				background: rgb(var(--gray-light));
-				margin-top: 0.5em;
-			}
-			.timeline-item:last-child .timeline-line {
-				display: none;
-			}
-			.timeline-content {
-				flex: 1;
-				padding-top: 0.15em;
-			}
-			.timeline-content h4 {
-				margin: 0;
-				font-size: 1.05em;
-			}
-			.timeline-date {
-				font-size: 0.85em;
-				color: rgb(var(--gray));
-				margin: 0.15em 0 0.5em;
-			}
-			.timeline-content p {
-				margin: 0;
-				font-size: 0.95em;
-				color: rgb(var(--gray-dark));
-			}
-			.portfolio-stagger {
-				opacity: 0;
-				animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-			}
-			.portfolio > :nth-child(1) { animation-delay: 0.7s; }
-			.portfolio > :nth-child(2) { animation-delay: 0.85s; }
-			.portfolio > :nth-child(3) { animation-delay: 1.0s; }
-			.portfolio > :nth-child(4) { animation-delay: 1.15s; }
-			.portfolio > :nth-child(5) { animation-delay: 1.3s; }
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<div class="hero">
-				<div class="hero-text">
-					<h1 class="stagger">Hey, I'm Joseph</h1>
-					<p class="subtitle stagger">Developer on Roblox</p>
-					<p class="stagger">
-						Welcome to my corner of the internet. I build interesting projects and games on Roblox. This is where I share my work, thoughts, and things I've learned along the way.
-					</p>
-					<p class="stagger">
-						If you're interested in what I do, feel free to check out my <a href="/blog">blog</a> or take a look at some of my <a href="/projects">projects</a>. If you're potentially interested in hiring me, check out my portfolio below!
-					</p>
-				</div>
-				<div class="hero-image">
-					<Image src={HeadshotImage} alt="Joseph Hill" width={256} height={256} />
-				</div>
-			</div>
-		</main>
-		<div class="divider"></div>
-		<section class="portfolio">
-			<h2 class="portfolio-stagger">My Portfolio</h2>
-			<h3 class="portfolio-stagger">Technical Skills</h3>
-			<div class="skills-section portfolio-stagger">
-				<h4>Platforms</h4>
-				<ul class="skill-list">
-					<li class="skill-item">
-						<span class="skill-icon"><img src={StudioIcon.src} alt="Roblox Studio" /></span>
-						<span class="skill-info"><span class="skill-name">Roblox Studio</span> <span class="skill-desc">— Game development environment</span></span>
-					</li>
-					<li class="skill-item">
-						<span class="skill-icon"><img src={GitHubIcon.src} alt="GitHub" class="theme-invert" /></span>
-						<span class="skill-info"><span class="skill-name">GitHub</span> <span class="skill-desc">— Code hosting & CI/CD</span></span>
-					</li>
-				</ul>
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <style>
+            .hero {
+                display: flex;
+                align-items: flex-start;
+                gap: 3em;
+            }
+            .hero-text {
+                flex: 1;
+            }
+            .hero-text h1 {
+                margin-bottom: 0.25em;
+            }
+            .hero-text .subtitle {
+                font-size: 1.25em;
+                color: rgb(var(--gray));
+                margin-bottom: 1.5em;
+            }
+            .hero-text p {
+                margin-bottom: 1em;
+            }
+            .hero-image {
+                flex-shrink: 0;
+            }
+            .hero-image img {
+                width: 180px;
+                height: 180px;
+                object-fit: cover;
+                border-radius: 50%;
+                outline: 2px solid rgba(255, 255, 255, 0.7);
+                outline-offset: -1px;
+            }
+            @keyframes fade-up {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            .stagger {
+                opacity: 0;
+                animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+            }
+            .stagger:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+            .stagger:nth-child(2) {
+                animation-delay: 0.25s;
+            }
+            .stagger:nth-child(3) {
+                animation-delay: 0.4s;
+            }
+            .stagger:nth-child(4) {
+                animation-delay: 0.55s;
+            }
+            @keyframes fade-up-scale {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px) scale(0.85);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+            .hero-image {
+                opacity: 0;
+                animation: fade-up-scale 0.8s cubic-bezier(0.16, 1, 0.3, 1)
+                    0.15s both;
+            }
+            @media (max-width: 720px) {
+                .hero {
+                    flex-direction: column-reverse;
+                    align-items: center;
+                    gap: 2em;
+                    text-align: center;
+                }
+                .hero-image img {
+                    width: 150px;
+                    height: 150px;
+                }
+            }
+            .divider {
+                border-top: 1px solid rgb(var(--gray-light));
+            }
+            .portfolio {
+                width: 720px;
+                max-width: calc(100% - 2em);
+                margin: auto;
+                padding: 3em 1em;
+            }
+            .portfolio h2 {
+                margin-bottom: 1.25em;
+            }
+            .portfolio h3 {
+                color: rgb(var(--gray));
+                font-weight: 500;
+            }
+            .skills-section {
+                margin-top: 1.5em;
+                margin-bottom: 3em;
+            }
+            .skills-section h4 {
+                font-size: 1.1em;
+                margin: 1.5em 0 0.75em;
+            }
+            .skills-section h4:first-child {
+                margin-top: 0;
+            }
+            .skill-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 0.35em;
+            }
+            .skill-item {
+                display: flex;
+                align-items: center;
+                gap: 0.75em;
+                padding: 0.6em 0.75em;
+                border-radius: 10px;
+                transition: background var(--transition);
+                cursor: default;
+            }
+            .skill-item:hover {
+                background: rgb(var(--gray-light));
+            }
+            .skill-icon {
+                width: 32px;
+                height: 32px;
+                flex-shrink: 0;
+                color: rgb(var(--gray));
+            }
+            .skill-icon svg,
+            .skill-icon img {
+                width: 32px;
+                height: 32px;
+                border-radius: 4px;
+            }
+            :global([data-theme="dark"]) .theme-invert {
+                filter: invert(1);
+            }
+            .skill-info {
+                flex: 1;
+            }
+            .skill-name {
+                font-weight: 600;
+                color: rgb(var(--gray-dark));
+            }
+            .skill-desc {
+                color: rgb(var(--gray));
+            }
+            .timeline {
+                margin-top: 1.5em;
+                position: relative;
+            }
+            .timeline-item {
+                display: flex;
+                gap: 1.25em;
+                position: relative;
+                padding-bottom: 2em;
+            }
+            .timeline-item:last-child {
+                padding-bottom: 0;
+            }
+            .timeline-marker {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                flex-shrink: 0;
+                width: 48px;
+            }
+            .timeline-logo {
+                width: 48px;
+                height: 48px;
+                border-radius: var(--radius);
+                background: rgb(var(--gray-light));
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.25em;
+                color: rgb(var(--gray));
+                flex-shrink: 0;
+                overflow: hidden;
+                z-index: 1;
+            }
+            .timeline-logo img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 0;
+            }
+            .timeline-line {
+                flex: 1;
+                width: 2px;
+                background: rgb(var(--gray-light));
+                margin-top: 0.5em;
+            }
+            .timeline-item:last-child .timeline-line {
+                display: none;
+            }
+            .timeline-content {
+                flex: 1;
+                padding-top: 0.15em;
+            }
+            .timeline-content h4 {
+                margin: 0;
+                font-size: 1.05em;
+            }
+            .timeline-date {
+                font-size: 0.85em;
+                color: rgb(var(--gray));
+                margin: 0.15em 0 0.5em;
+            }
+            .timeline-content p {
+                margin: 0;
+                font-size: 0.95em;
+                color: rgb(var(--gray-dark));
+            }
+            .portfolio-stagger {
+                opacity: 0;
+                animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+            }
+            .portfolio > :nth-child(1) {
+                animation-delay: 0.7s;
+            }
+            .portfolio > :nth-child(2) {
+                animation-delay: 0.85s;
+            }
+            .portfolio > :nth-child(3) {
+                animation-delay: 1s;
+            }
+            .portfolio > :nth-child(4) {
+                animation-delay: 1.15s;
+            }
+            .portfolio > :nth-child(5) {
+                animation-delay: 1.3s;
+            }
+        </style>
+    </head>
+    <body>
+        <Header />
+        <main>
+            <div class="hero">
+                <div class="hero-text">
+                    <h1 class="stagger">Hey, I'm Joseph</h1>
+                    <p class="subtitle stagger">Developer on Roblox</p>
+                    <p class="stagger">
+                        Welcome to my corner of the internet. I build
+                        interesting projects and games on Roblox. This is where
+                        I share my work, thoughts, and things I've learned along
+                        the way.
+                    </p>
+                    <p class="stagger">
+                        If you're interested in what I do, feel free to check
+                        out my <a href="/blog">blog</a> or take a look at some of
+                        my <a href="/projects">projects</a>. If you're
+                        potentially interested in hiring me, check out my
+                        portfolio below!
+                    </p>
+                </div>
+                <div class="hero-image">
+                    <Image
+                        src={HeadshotImage}
+                        alt="Joseph Hill"
+                        width={256}
+                        height={256}
+                    />
+                </div>
+            </div>
+        </main>
+        <div class="divider"></div>
+        <section class="portfolio">
+            <h2 class="portfolio-stagger">My Portfolio</h2>
+            <h3 class="portfolio-stagger">Technical Skills</h3>
+            <div class="skills-section portfolio-stagger">
+                <h4>Platforms</h4>
+                <ul class="skill-list">
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img
+                                src={StudioIcon.src}
+                                alt="Roblox Studio"
+                            /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">Roblox Studio</span>
+                            <span class="skill-desc"
+                                >— Game development environment</span
+                            ></span
+                        >
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img
+                                src={GitHubIcon.src}
+                                alt="GitHub"
+                                class="theme-invert"
+                            /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">GitHub</span>
+                            <span class="skill-desc"
+                                >— Code hosting & CI/CD</span
+                            ></span
+                        >
+                    </li>
+                </ul>
 
-				<h4>Languages</h4>
-				<ul class="skill-list">
-					<li class="skill-item">
-						<span class="skill-icon"><img src={LuauIcon.src} alt="Luau" /></span>
-						<span class="skill-info"><span class="skill-name">Luau</span> <span class="skill-desc">— Game scripting for Roblox</span></span>
-					</li>
-					<li class="skill-item">
-						<span class="skill-icon"><img src={JavaScriptIcon.src} alt="JavaScript" style="width: 25px; height: 25px;" /></span>
-						<span class="skill-info"><span class="skill-name">JavaScript</span> <span class="skill-desc">— Web development & tooling</span></span>
-					</li>
-					<li class="skill-item">
-						<span class="skill-icon"><img src={HtmlCssIcon.src} alt="HTML / CSS" style="width: 36px; height: 36px; position: relative; top: -5px;" /></span>
-						<span class="skill-info"><span class="skill-name">HTML / CSS</span> <span class="skill-desc">— Web fundamentals & styling</span></span>
-					</li>
-				</ul>
+                <h4>Languages</h4>
+                <ul class="skill-list">
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img src={LuauIcon.src} alt="Luau" /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">Luau</span>
+                            <span class="skill-desc"
+                                >— Game scripting for Roblox</span
+                            ></span
+                        >
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img
+                                src={JavaScriptIcon.src}
+                                alt="JavaScript"
+                                style="width: 25px; height: 25px;"
+                            /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">JavaScript</span>
+                            <span class="skill-desc"
+                                >— Web development & tooling</span
+                            ></span
+                        >
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img
+                                src={HtmlCssIcon.src}
+                                alt="HTML / CSS"
+                                style="width: 36px; height: 36px; position: relative; top: -5px;"
+                            /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">HTML / CSS</span>
+                            <span class="skill-desc"
+                                >— Web fundamentals & styling</span
+                            ></span
+                        >
+                    </li>
+                </ul>
 
-				<h4>Tools</h4>
-				<ul class="skill-list">
-					<li class="skill-item">
-						<span class="skill-icon"><img src={GitIcon.src} alt="Git" /></span>
-						<span class="skill-info"><span class="skill-name">Git</span> <span class="skill-desc">— Version control & collaboration</span></span>
-					</li>
-					<li class="skill-item">
-						<span class="skill-icon"><img src={NodeJsIcon.src} alt="Node.js" /></span>
-						<span class="skill-info"><span class="skill-name">Node.js</span> <span class="skill-desc">— Backend services & APIs</span></span>
-					</li>
-					<li class="skill-item">
-						<span class="skill-icon"><img src={RojoIcon.src} alt="Rojo" /></span>
-						<span class="skill-info"><span class="skill-name">Rojo</span> <span class="skill-desc">— Roblox project syncing & external tooling</span></span>
-					</li>
-					<li class="skill-item">
-						<span class="skill-icon"><img src={VsCodeIcon.src} alt="VS Code" /></span>
-						<span class="skill-info"><span class="skill-name">VS Code</span> <span class="skill-desc">— Primary code editor</span></span>
-					</li>
-					<li class="skill-item">
-						<span class="skill-icon"><img src={ClaudeIcon.src} alt="Claude Code" /></span>
-						<span class="skill-info"><span class="skill-name">Claude Code</span> <span class="skill-desc">— AI-assisted development & pair programming</span></span>
-					</li>
-				</ul>
-			</div>
-			<h3 class="portfolio-stagger">Past Experience</h3>
-			<div class="timeline portfolio-stagger">
-				<div class="timeline-item">
-					<div class="timeline-marker">
-						<div class="timeline-logo"><img src={KocmocLogo.src} alt="Kocmoc" /></div>
-						<div class="timeline-line"></div>
-					</div>
-					<div class="timeline-content">
-						<h4>Owner — Kocmoc</h4>
-						<p class="timeline-date">January 2022 — March 2023</p>
-						<p>Led development of an automated macro for Roblox with 15,000 free and 3,000 paid customers. Discontinued in 2023.</p>
-					</div>
-				</div>
-				<div class="timeline-item">
-					<div class="timeline-marker">
-						<div class="timeline-logo"><img src={BrainySpinachLogo.src} alt="Brainy Spinach" /></div>
-						<div class="timeline-line"></div>
-					</div>
-					<div class="timeline-content">
-						<h4>Programmer - BrainySpinach Maths</h4>
-						<p class="timeline-date">March 2023 - December 2025</p>
-						<p>Built core gameplay systems and UI for a popular Roblox game, working closely with designers and artists.</p>
-					</div>
-				</div>
-				<div class="timeline-item">
-					<div class="timeline-marker">
-						<div class="timeline-logo"><span role="img" aria-label="Freelance" style={`display: block; width: 70%; height: 70%; background-color: #f59e0b; -webkit-mask: url(${BriefcaseIcon.src}) center / contain no-repeat; mask: url(${BriefcaseIcon.src}) center / contain no-repeat;`}></span></div>
-						<div class="timeline-line"></div>
-					</div>
-					<div class="timeline-content">
-						<h4>Freelance Developer</h4>
-						<p class="timeline-date">December 2025 — April 2026</p>
-						<p>Took on various commissions building systems, tools, and plugins for Roblox developers.</p>
-					</div>
-				</div>
-				<div class="timeline-item">
-					<div class="timeline-marker">
-						<div class="timeline-logo"><img src={EtaGamesLogo.src} alt="ETA Games" style="width: 90%; height: 90%; object-fit: contain;" /></div>
-						<div class="timeline-line"></div>
-					</div>
-					<div class="timeline-content">
-						<h4>Programmer and DevOps — ETA Games</h4>
-						<p class="timeline-date">April 2026 — Present</p>
-						<p>Building gameplay features and maintaining the deployment pipeline and developer tooling that keep the studio shipping smoothly.</p>
-					</div>
-				</div>
-			</div>
-		</section>
-		<Footer />
-	</body>
+                <h4>Tools</h4>
+                <ul class="skill-list">
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img src={GitIcon.src} alt="Git" /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">Git</span>
+                            <span class="skill-desc"
+                                >— Version control & collaboration</span
+                            ></span
+                        >
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img src={NodeJsIcon.src} alt="Node.js" /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">Node.js</span>
+                            <span class="skill-desc"
+                                >— Backend services & APIs</span
+                            ></span
+                        >
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img src={RojoIcon.src} alt="Rojo" /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">Rojo</span>
+                            <span class="skill-desc"
+                                >— Roblox project syncing & external tooling</span
+                            ></span
+                        >
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img src={VsCodeIcon.src} alt="VS Code" /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">VS Code</span>
+                            <span class="skill-desc">— Primary code editor</span
+                            ></span
+                        >
+                    </li>
+                    <li class="skill-item">
+                        <span class="skill-icon"
+                            ><img
+                                src={ClaudeIcon.src}
+                                alt="Claude Code"
+                            /></span
+                        >
+                        <span class="skill-info"
+                            ><span class="skill-name">Claude Code</span>
+                            <span class="skill-desc"
+                                >— AI-assisted development & pair programming</span
+                            ></span
+                        >
+                    </li>
+                </ul>
+            </div>
+            <h3 class="portfolio-stagger">Past Experience</h3>
+            <div class="timeline portfolio-stagger">
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-logo">
+                            <img src={KocmocLogo.src} alt="Kocmoc" />
+                        </div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Owner — Kocmoc</h4>
+                        <p class="timeline-date">January 2022 — March 2023</p>
+                        <p>
+                            Led development of an automated macro for Roblox
+                            with 15,000 free and 3,000 paid customers.
+                            Discontinued in 2023.
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-logo">
+                            <img
+                                src={BrainySpinachLogo.src}
+                                alt="Brainy Spinach"
+                            />
+                        </div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Programmer - BrainySpinach Maths</h4>
+                        <p class="timeline-date">March 2023 - December 2025</p>
+                        <p>
+                            Built core gameplay systems and UI for a popular
+                            Roblox game, working closely with designers and
+                            artists.
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-logo">
+                            <span
+                                role="img"
+                                aria-label="Freelance"
+                                style={`display: block; width: 70%; height: 70%; background-color: #f59e0b; -webkit-mask: url(${BriefcaseIcon.src}) center / contain no-repeat; mask: url(${BriefcaseIcon.src}) center / contain no-repeat;`}
+                            ></span>
+                        </div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Freelance Developer</h4>
+                        <p class="timeline-date">December 2025 — April 2026</p>
+                        <p>
+                            Took on various commissions building systems, tools,
+                            and plugins for Roblox developers.
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-logo">
+                            <img
+                                src={EtaGamesLogo.src}
+                                alt="ETA Games"
+                                style="width: 90%; height: 90%; object-fit: contain;"
+                            />
+                        </div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Programmer and DevOps — ETA Games</h4>
+                        <p class="timeline-date">April 2026 — May 2026</p>
+                        <p>
+                            Building gameplay features and maintaining the
+                            deployment pipeline and developer tooling that keep
+                            the studio shipping smoothly.
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-logo">
+                            <img
+                                src={NexusGamesLogo.src}
+                                alt="Nexus Games"
+                                style="width: 85%; height: 85%; object-fit: contain;"
+                            />
+                        </div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Developer — Nexus Games</h4>
+                        <p class="timeline-date">May 2026 — Present</p>
+                        <p>
+                            Leading the game's creative direction and working on
+                            the DevOps pipeline, UI, and core gameplay systems.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <Footer />
+    </body>
 </html>
