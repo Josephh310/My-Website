@@ -17,7 +17,10 @@ import GitHubIcon from "../assets/skill_icons/github.svg";
 import KocmocLogo from "../assets/experience_thumbnails/kocmoc.png";
 import BrainySpinachLogo from "../assets/experience_thumbnails/brainy_spinach.png";
 import EtaGamesLogo from "../assets/experience_thumbnails/eta_games.png";
-import NexusGamesLogo from "../assets/experience_thumbnails/nexus_games.svg";
+// nexus_dark = dark-colored logo for the light theme; nexus_light = light-colored logo for the dark theme
+import NexusGamesLightThemeLogo from "../assets/experience_thumbnails/nexus_games/nexus_dark.png";
+import NexusGamesDarkThemeLogo from "../assets/experience_thumbnails/nexus_games/nexus_light.png";
+import NoctovoGamesLogo from "../assets/experience_thumbnails/noctovo_games.png";
 ---
 
 <!doctype html>
@@ -169,6 +172,20 @@ import NexusGamesLogo from "../assets/experience_thumbnails/nexus_games.svg";
             }
             :global([data-theme="dark"]) .theme-invert {
                 filter: invert(1);
+            }
+            .timeline-logo img.theme-logo {
+                width: 60%;
+                height: 60%;
+                object-fit: contain;
+            }
+            .theme-logo--dark {
+                display: none;
+            }
+            :global([data-theme="dark"]) .theme-logo--light {
+                display: none;
+            }
+            :global([data-theme="dark"]) .theme-logo--dark {
+                display: block;
             }
             .skill-info {
                 flex: 1;
@@ -427,7 +444,11 @@ import NexusGamesLogo from "../assets/experience_thumbnails/nexus_games.svg";
                 <div class="timeline-item">
                     <div class="timeline-marker">
                         <div class="timeline-logo">
-                            <img src={KocmocLogo.src} alt="Kocmoc" />
+                            <img
+                                src={KocmocLogo.src}
+                                alt="Kocmoc"
+                                style="width: 82%; height: 82%; object-fit: contain;"
+                            />
                         </div>
                         <div class="timeline-line"></div>
                     </div>
@@ -447,6 +468,7 @@ import NexusGamesLogo from "../assets/experience_thumbnails/nexus_games.svg";
                             <img
                                 src={BrainySpinachLogo.src}
                                 alt="Brainy Spinach"
+                                style="width: 82%; height: 82%; object-fit: contain;"
                             />
                         </div>
                         <div class="timeline-line"></div>
@@ -486,9 +508,14 @@ import NexusGamesLogo from "../assets/experience_thumbnails/nexus_games.svg";
                     <div class="timeline-marker">
                         <div class="timeline-logo">
                             <img
-                                src={NexusGamesLogo.src}
+                                src={NexusGamesLightThemeLogo.src}
                                 alt="Nexus Games"
-                                style="width: 85%; height: 85%; object-fit: contain;"
+                                class="theme-logo theme-logo--light"
+                            />
+                            <img
+                                src={NexusGamesDarkThemeLogo.src}
+                                alt="Nexus Games"
+                                class="theme-logo theme-logo--dark"
                             />
                         </div>
                         <div class="timeline-line"></div>
@@ -499,6 +526,28 @@ import NexusGamesLogo from "../assets/experience_thumbnails/nexus_games.svg";
                         <p>
                             Leading the game's creative direction and working on
                             the DevOps pipeline, UI, and core gameplay systems.
+                        </p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">
+                        <div class="timeline-logo">
+                            <img
+                                src={NoctovoGamesLogo.src}
+                                alt="Noctovo Games"
+                                class="theme-invert"
+                                style="width: 80%; height: 80%; object-fit: contain;"
+                            />
+                        </div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="timeline-content">
+                        <h4>Gameplay Engineer — Noctovo Games</h4>
+                        <p class="timeline-date">June 2026 — Present</p>
+                        <p>
+                            Designing and implementing core gameplay systems and
+                            mechanics, collaborating with the team to build new
+                            features
                         </p>
                     </div>
                 </div>
