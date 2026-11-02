@@ -34,11 +34,8 @@ const full = new Intl.NumberFormat('en-US');
 				color: rgb(var(--gray));
 				margin-bottom: 2em;
 			}
-			h2 {
-				font-size: 1.5em;
-				font-weight: 500;
-				color: rgb(var(--gray));
-				margin-bottom: 1em;
+			.subtitle strong {
+				color: rgb(var(--black));
 			}
 			dl {
 				margin: 0;
@@ -46,42 +43,16 @@ const full = new Intl.NumberFormat('en-US');
 			dd {
 				margin: 0;
 			}
-			.stat,
 			.game-stat {
 				display: flex;
 				flex-direction: column-reverse;
-			}
-			.stats {
-				display: grid;
-				grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-				gap: 1em;
-			}
-			.stat {
-				padding: 1.25em;
-				background: var(--bg-card);
-				border: 1px solid rgb(var(--gray-light));
-				border-radius: var(--radius);
-			}
-			.stat dt {
-				font-size: 0.9em;
-				color: rgb(var(--gray));
-			}
-			.stat dd {
-				font-size: 2em;
-				font-weight: 700;
-				line-height: 1.2;
-				letter-spacing: -0.02em;
-				color: rgb(var(--black));
-			}
-			.stat:first-child dd {
-				color: var(--accent);
 			}
 			.game-grid {
 				display: grid;
 				grid-template-columns: repeat(2, 1fr);
 				gap: 1.5rem;
 				list-style-type: none;
-				margin: 2.5em 0 0;
+				margin: 0;
 				padding: 0;
 			}
 			.game-card {
@@ -153,25 +124,12 @@ const full = new Intl.NumberFormat('en-US');
 		<Header />
 		<main>
 			<h1>Games</h1>
-			<p class="subtitle">Roblox games I've worked on, and the players they've reached.</p>
-
-			<section aria-labelledby="stats-heading">
-				<h2 id="stats-heading">Overall Stats</h2>
-				<dl class="stats">
-					<div class="stat">
-						<dt>Lifetime visits</dt>
-						<dd title={full.format(totalVisits)}>{compact.format(totalVisits)}</dd>
-					</div>
-					<div class="stat">
-						<dt>Favourites</dt>
-						<dd title={full.format(totalFavorites)}>{compact.format(totalFavorites)}</dd>
-					</div>
-					<div class="stat">
-						<dt>Games worked on</dt>
-						<dd>{games.length}</dd>
-					</div>
-				</dl>
-			</section>
+			<p class="subtitle">
+				Roblox games I've worked on, with
+				<strong title={full.format(totalVisits)}>{compact.format(totalVisits)}</strong> combined
+				visits and <strong title={full.format(totalFavorites)}>{compact.format(totalFavorites)}</strong>
+				favourites.
+			</p>
 
 			<ul class="game-grid">
 				{
