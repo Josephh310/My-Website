@@ -6,6 +6,8 @@ export interface Game {
 	// Display name, since the live Roblox title often carries event prefixes like "[UPDATE]"
 	name: string;
 	description: string;
+	// Shown with an "Unreleased" badge instead of stats, and excluded from totals
+	unreleased?: boolean;
 }
 
 export const GAMES: Game[] = [
@@ -18,5 +20,11 @@ export const GAMES: Game[] = [
 		placeId: 4282985734,
 		name: 'Combat Warriors',
 		description: 'A fast-paced fighting game built around melee and ranged weapon combat.',
+	},
+	{
+		placeId: 112389801624808,
+		name: 'Star Strikers',
+		description: 'A tower defense game, currently in development.',
+		unreleased: true,
 	},
 ];

@@ -1,7 +1,8 @@
 import type { Game } from '../data/games';
 
 export interface GameStats extends Game {
-	url: string;
+	// Undefined for unreleased games, which have no public page
+	url: string | undefined;
 	thumbnailUrl: string | undefined;
 	visits: number;
 	favorites: number;
@@ -43,13 +44,19 @@ export async function getGameStats(games: Game[]): Promise<GameStats[]> {
 
 	return games.map((game, i) => {
 		const universeId = universeIds[i];
+		const thumbnail = thumbnails.data
+			.find((t) => t.universeId === universeId)
+			?.thumbnails.find((t) => t.state === 'Completed');
+
+		// Private games return placeholder details, so only thumbnails are usable
+		if (game.unreleased) {
+			return { ...game, url: undefined, thumbnailUrl: thumbnail?.imageUrl, visits: 0, favorites: 0 };
+		}
+
 		const detail = details.data.find((d) => d.id === universeId);
 		if (!detail) {
 			throw new Error(`No Roblox game details returned for ${game.name} (universe ${universeId})`);
 		}
-		const thumbnail = thumbnails.data
-			.find((t) => t.universeId === universeId)
-			?.thumbnails.find((t) => t.state === 'Completed');
 
 		return {
 			...game,

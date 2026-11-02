@@ -62,11 +62,11 @@ const full = new Intl.NumberFormat('en-US');
 				overflow: hidden;
 				transition: box-shadow var(--transition), transform var(--transition);
 			}
-			.game-card:hover {
+			.game-card:has(a):hover {
 				box-shadow: var(--box-shadow-hover);
 				transform: translateY(-2px);
 			}
-			.game-card a {
+			.game-link {
 				display: block;
 				height: 100%;
 				color: inherit;
@@ -91,7 +91,7 @@ const full = new Intl.NumberFormat('en-US');
 				margin: 0 0 0.25em;
 				transition: color var(--transition);
 			}
-			.game-card a:hover h3 {
+			a.game-link:hover h3 {
 				color: var(--accent);
 			}
 			.game-description {
@@ -111,6 +111,15 @@ const full = new Intl.NumberFormat('en-US');
 			.game-stat dd {
 				font-weight: 700;
 				color: rgb(var(--black));
+			}
+			.unreleased {
+				display: inline-block;
+				padding: 0.15em 0.65em;
+				border-radius: 999px;
+				background: rgb(var(--gray-light));
+				color: rgb(var(--gray));
+				font-size: 0.8em;
+				font-weight: 700;
 			}
 			@media (max-width: 720px) {
 				.game-grid {
@@ -133,31 +142,38 @@ const full = new Intl.NumberFormat('en-US');
 
 			<ul class="game-grid">
 				{
-					games.map((game) => (
-						<li class="game-card">
-							<a href={game.url} target="_blank">
-								{game.thumbnailUrl ? (
-									<Image src={game.thumbnailUrl} width={768} height={432} alt="" />
-								) : (
-									<div class="thumbnail-placeholder" />
-								)}
-								<div class="game-info">
-									<h3>{game.name}</h3>
-									<p class="game-description">{game.description}</p>
-									<dl class="game-stats">
-										<div class="game-stat">
-											<dt>Lifetime visits</dt>
-											<dd>{full.format(game.visits)}</dd>
-										</div>
-										<div class="game-stat">
-											<dt>Favourites</dt>
-											<dd>{full.format(game.favorites)}</dd>
-										</div>
-									</dl>
-								</div>
-							</a>
-						</li>
-					))
+					games.map((game) => {
+						const Wrapper = game.url ? 'a' : 'div';
+						return (
+							<li class="game-card">
+								<Wrapper class="game-link" href={game.url} target={game.url && '_blank'}>
+									{game.thumbnailUrl ? (
+										<Image src={game.thumbnailUrl} width={768} height={432} alt="" />
+									) : (
+										<div class="thumbnail-placeholder" />
+									)}
+									<div class="game-info">
+										<h3>{game.name}</h3>
+										<p class="game-description">{game.description}</p>
+										{game.unreleased ? (
+											<span class="unreleased">Unreleased</span>
+										) : (
+											<dl class="game-stats">
+												<div class="game-stat">
+													<dt>Lifetime visits</dt>
+													<dd>{full.format(game.visits)}</dd>
+												</div>
+												<div class="game-stat">
+													<dt>Favourites</dt>
+													<dd>{full.format(game.favorites)}</dd>
+												</div>
+											</dl>
+										)}
+									</div>
+								</Wrapper>
+							</li>
+						);
+					})
 				}
 			</ul>
 		</main>
