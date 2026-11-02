@@ -8,4 +8,8 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	site: 'https://josephh.dev/',
 	integrations: [mdx(), sitemap()],
+	image: {
+		// Roblox game thumbnails, downloaded and optimised at build time
+		domains: ['tr.rbxcdn.com'],
+	},
 });

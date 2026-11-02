@@ -1,0 +1,182 @@
+---
+import { Image } from 'astro:assets';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import { GAMES } from '../data/games';
+import { getGameStats } from '../lib/roblox';
+
+// Fetched at build time, so stats are a snapshot from the last deploy
+const games = (await getGameStats(GAMES)).sort((a, b) => b.visits - a.visits);
+const totalVisits = games.reduce((sum, game) => sum + game.visits, 0);
+const totalFavorites = games.reduce((sum, game) => sum + game.favorites, 0);
+
+// Truncate rather than round so compact totals are never overstated
+const compact = new Intl.NumberFormat('en-US', {
+	notation: 'compact',
+	maximumSignificantDigits: 3,
+	roundingMode: 'trunc',
+});
+const full = new Intl.NumberFormat('en-US');
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Games | ${SITE_TITLE}`}
+			description="Roblox games I've worked on and their lifetime stats"
+		/>
+		<style>
+			.subtitle {
+				font-size: 1.25em;
+				color: rgb(var(--gray));
+				margin-bottom: 2em;
+			}
+			.subtitle strong {
+				color: rgb(var(--black));
+			}
+			dl {
+				margin: 0;
+			}
+			dd {
+				margin: 0;
+			}
+			.game-stat {
+				display: flex;
+				flex-direction: column-reverse;
+			}
+			.game-grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 1.5rem;
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+			}
+			.game-card {
+				background: var(--bg-card);
+				border: 1px solid rgb(var(--gray-light));
+				border-radius: var(--radius);
+				overflow: hidden;
+				transition: box-shadow var(--transition), transform var(--transition);
+			}
+			.game-card:has(a):hover {
+				box-shadow: var(--box-shadow-hover);
+				transform: translateY(-2px);
+			}
+			.game-link {
+				display: block;
+				height: 100%;
+				color: inherit;
+				text-decoration: none;
+			}
+			.game-card img,
+			.thumbnail-placeholder {
+				display: block;
+				width: 100%;
+				aspect-ratio: 16 / 9;
+				object-fit: cover;
+				border-radius: 0;
+			}
+			.thumbnail-placeholder {
+				background: rgb(var(--gray-light));
+			}
+			.game-info {
+				padding: 1.25em;
+			}
+			.game-info h3 {
+				font-size: 1.25em;
+				margin: 0 0 0.25em;
+				transition: color var(--transition);
+			}
+			a.game-link:hover h3 {
+				color: var(--accent);
+			}
+			.game-description {
+				margin: 0 0 1em;
+				font-size: 0.9em;
+				color: rgb(var(--gray));
+			}
+			.game-stats {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5em 1.5em;
+			}
+			.game-stat dt {
+				font-size: 0.8em;
+				color: rgb(var(--gray));
+			}
+			.game-stat dd {
+				font-weight: 700;
+				color: rgb(var(--black));
+			}
+			.unreleased {
+				display: inline-block;
+				padding: 0.15em 0.65em;
+				border-radius: 999px;
+				background: rgb(var(--gray-light));
+				color: rgb(var(--gray));
+				font-size: 0.8em;
+				font-weight: 700;
+			}
+			@media (max-width: 720px) {
+				.game-grid {
+					grid-template-columns: 1fr;
+					gap: 1em;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1>Games</h1>
+			<p class="subtitle">
+				Roblox games I've worked on, with
+				<strong title={full.format(totalVisits)}>{compact.format(totalVisits)}</strong> combined
+				visits and <strong title={full.format(totalFavorites)}>{compact.format(totalFavorites)}</strong>
+				favourites.
+			</p>
+
+			<ul class="game-grid">
+				{
+					games.map((game) => {
+						const Wrapper = game.url ? 'a' : 'div';
+						return (
+							<li class="game-card">
+								<Wrapper class="game-link" href={game.url} target={game.url && '_blank'}>
+									{game.thumbnailUrl ? (
+										<Image src={game.thumbnailUrl} width={768} height={432} alt="" />
+									) : (
+										<div class="thumbnail-placeholder" />
+									)}
+									<div class="game-info">
+										<h3>{game.name}</h3>
+										<p class="game-description">{game.description}</p>
+										{game.unreleased ? (
+											<span class="unreleased">Unreleased</span>
+										) : (
+											<dl class="game-stats">
+												<div class="game-stat">
+													<dt>Lifetime visits</dt>
+													<dd>{full.format(game.visits)}</dd>
+												</div>
+												<div class="game-stat">
+													<dt>Favourites</dt>
+													<dd>{full.format(game.favorites)}</dd>
+												</div>
+											</dl>
+										)}
+									</div>
+								</Wrapper>
+							</li>
+						);
+					})
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
