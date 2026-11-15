@@ -4,6 +4,9 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { getBuildAvatarHash } from "../lib/avatar";
+import { avatarUrl } from "../lib/discord";
+// Fallback for when the Discord avatar can't be fetched at build time
 import HeadshotImage from "../assets/headshot.png";
 import LuauIcon from "../assets/skill_icons/luau.svg";
 import JavaScriptIcon from "../assets/skill_icons/javascript.svg";
@@ -23,6 +26,8 @@ import NexusGamesDarkThemeLogo from "../assets/experience_thumbnails/nexus_games
 import NoctovoGamesLogo from "../assets/experience_thumbnails/noctovo_games.png";
 import BossStudioLogo from "../assets/experience_thumbnails/boss_studio.png";
 import UnicoLogo from "../assets/experience_thumbnails/Unico.webp";
+
+const avatarHash = await getBuildAvatarHash();
 ---
 
 <!doctype html>
@@ -303,10 +308,11 @@ import UnicoLogo from "../assets/experience_thumbnails/Unico.webp";
                 </div>
                 <div class="hero-image">
                     <Image
-                        src={HeadshotImage}
+                        src={avatarHash ? avatarUrl(avatarHash, 512) : HeadshotImage}
                         alt="Joseph Hill"
                         width={256}
                         height={256}
+                        data-avatar-size="512"
                     />
                 </div>
             </div>
