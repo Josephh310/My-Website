@@ -6,14 +6,24 @@ export const DISCORD_USER_ID = '1355164705018085466';
 // who are members of its Discord server (discord.gg/lanyard)
 const LANYARD_URL = `https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`;
 
-// Resolves to null if the account is using Discord's default avatar
-export async function fetchAvatarHash(): Promise<string | null> {
+export type DiscordStatus = 'online' | 'idle' | 'dnd' | 'offline';
+
+// The subset of Lanyard's response the site uses
+export interface Presence {
+	discord_user: {
+		// Null if the account is using Discord's default avatar
+		avatar: string | null;
+	};
+	discord_status: DiscordStatus;
+}
+
+export async function fetchPresence(): Promise<Presence> {
 	const res = await fetch(LANYARD_URL);
 	if (!res.ok) {
 		throw new Error(`Lanyard request failed (${res.status})`);
 	}
-	const { data } = (await res.json()) as { data: { discord_user: { avatar: string | null } } };
-	return data.discord_user.avatar;
+	const { data } = (await res.json()) as { data: Presence };
+	return data;
 }
 
 // The hash changes whenever the avatar does, so these URLs never serve a stale image.

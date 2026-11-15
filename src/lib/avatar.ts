@@ -1,7 +1,7 @@
 // Build-time only: uses sharp and the filesystem, so never import this from client scripts
 import { readFile } from 'node:fs/promises';
 import sharp from 'sharp';
-import { avatarUrl, fetchAvatarHash } from './discord';
+import { avatarUrl, fetchPresence } from './discord';
 
 let hashPromise: Promise<string | null> | undefined;
 let sourcePromise: Promise<Buffer> | undefined;
@@ -9,10 +9,12 @@ let sourcePromise: Promise<Buffer> | undefined;
 // Fetched once per build and shared by every page. Resolves to null if there's no custom
 // avatar or Lanyard is unreachable, in which case the site falls back to the local headshot
 export function getBuildAvatarHash(): Promise<string | null> {
-	hashPromise ??= fetchAvatarHash().catch((error: unknown) => {
-		console.warn(`Couldn't fetch Discord avatar, falling back to the local headshot: ${error}`);
-		return null;
-	});
+	hashPromise ??= fetchPresence()
+		.then(({ discord_user }) => discord_user.avatar)
+		.catch((error: unknown) => {
+			console.warn(`Couldn't fetch Discord avatar, falling back to the local headshot: ${error}`);
+			return null;
+		});
 	return hashPromise;
 }
 

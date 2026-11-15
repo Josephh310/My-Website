@@ -62,15 +62,32 @@ const avatarHash = await getBuildAvatarHash();
 <ClientRouter />
 
 <script>
-	import { avatarUrl, fetchAvatarHash } from '../lib/discord';
+	import { avatarUrl, fetchPresence, type DiscordStatus } from '../lib/discord';
+
+	const STATUS_LABELS: Record<DiscordStatus, string> = {
+		online: 'Online',
+		idle: 'Idle',
+		dnd: 'Do Not Disturb',
+		offline: 'Offline',
+	};
+
+	// Fetched once per full page load and reused across client-side navigations
+	const presence = fetchPresence().catch(() => null);
+
+	// Status dots stay hidden until the live status is known
+	function showStatus(status: DiscordStatus) {
+		const label = `${STATUS_LABELS[status]} on Discord`;
+		for (const dot of document.querySelectorAll<HTMLElement>('[data-discord-status]')) {
+			dot.dataset.discordStatus = status;
+			dot.title = label;
+			dot.setAttribute('aria-label', label);
+			dot.hidden = false;
+		}
+	}
 
 	// Pages ship with the avatar from the last deploy. If it has changed on Discord since,
-	// swap the live one into the favicons and headshot. Fetched once per full page load
-	const liveHash = fetchAvatarHash().catch(() => null);
-
-	// Runs on every client-side navigation too, since swapping in the new page restores the built URLs
-	document.addEventListener('astro:page-load', async () => {
-		const hash = await liveHash;
+	// swap the live one into the favicons and headshot
+	function updateAvatar(hash: string | null) {
 		const builtHash = document.querySelector<HTMLMetaElement>('meta[name="discord-avatar"]')?.content;
 		if (!hash || hash === builtHash) return;
 
@@ -83,6 +100,14 @@ const avatarHash = await getBuildAvatarHash();
 				el.href = avatarUrl(hash, size);
 			}
 		}
+	}
+
+	// Runs after client-side navigations too, since each new page arrives with its built markup
+	document.addEventListener('astro:page-load', async () => {
+		const data = await presence;
+		if (!data) return;
+		showStatus(data.discord_status);
+		updateAvatar(data.discord_user.avatar);
 	});
 </script>
 
